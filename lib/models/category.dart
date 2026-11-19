@@ -1,4 +1,4 @@
-import 'package:fin_grow/models/transaction.dart';
+import 'package:fin_grow/models/transaction_type.dart';
 
 class Category{
     final String categoryId;

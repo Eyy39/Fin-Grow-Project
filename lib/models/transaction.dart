@@ -1,4 +1,4 @@
-enum TransactionType { income, expense }
+import 'package:fin_grow/models/transaction_type.dart';
 
 class Transaction {
   final String transactionId;
