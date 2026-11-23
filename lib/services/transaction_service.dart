@@ -1,3 +1,4 @@
+import 'package:fin_grow/exception/validation_exception.dart';
 import 'package:fin_grow/models/transaction.dart';
 import 'package:fin_grow/models/transaction_type.dart';
 
@@ -6,17 +7,17 @@ class TransactionService{
 
     void addTransaction({ required String transactionId, required String title, required double amount, String description = '', required TransactionType type, DateTime? date, required String categoryId}){
         if(_findTransactionOrNull(transactionId) != null){
-            throw Exception("Transaction $transactionId already exist!");
+            throw ValidationException("Transaction $transactionId already exist!");
         }
         if(amount <= 0){
-            throw Exception("Amount must be greater than zero");
+            throw ValidationException("Amount must be greater than zero");
         }
         transactions.add(Transaction(transactionId: transactionId, title: title, amount: amount, type: type, date: date ?? DateTime.now(), categoryId: categoryId));
     }
 
     void deleteTransaction(String id){
         if(_findTransactionOrNull(id) == null){
-            throw Exception("Transaction not found!");
+            throw ValidationException("Transaction not found!");
         }
         transactions.removeWhere((t)=> t.transactionId == id);
     }
@@ -31,16 +32,16 @@ class TransactionService{
     void updateTransaction({required String transactionId, required String title, required double amount, required TransactionType type, required String categoryId, DateTime? date, String description = ''}){
         final transaction = _findTransactionOrNull(transactionId);
         if(transaction == null){
-            throw Exception("Transaction not found!");
+            throw ValidationException("Transaction not found!");
         }
 
         // validate before modifying existing data
         if(title.trim().isEmpty){
-            throw Exception("Title cannot empty");
+            throw ValidationException("Title cannot empty");
         }
 
         if(amount<=0){
-            throw Exception("Amount must be greater than zero!");
+            throw ValidationException("Amount must be greater than zero!");
         }
 
         transaction.title = title;

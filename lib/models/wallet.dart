@@ -1,3 +1,4 @@
+import 'package:fin_grow/models/budget.dart';
 import 'package:fin_grow/models/category.dart';
 import 'package:fin_grow/models/saving_goal.dart';
 import 'package:fin_grow/models/transaction.dart';
