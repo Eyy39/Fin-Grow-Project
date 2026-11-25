@@ -1,9 +1,13 @@
 import 'package:fin_grow/exception/validation_exception.dart';
 import 'package:fin_grow/models/transaction.dart';
 import 'package:fin_grow/models/transaction_type.dart';
+import 'package:fin_grow/models/wallet.dart';
 
 class TransactionService{
-    List<Transaction> transactions = [];
+    final List<Transaction> transactions = [];
+    final Wallet wallet;
+
+    TransactionService(this.wallet);
 
     void addTransaction({ required String transactionId, required String title, required double amount, String description = '', required TransactionType type, DateTime? date, required String categoryId}){
         if(_findTransactionOrNull(transactionId) != null){
@@ -11,6 +15,10 @@ class TransactionService{
         }
         if(amount <= 0){
             throw ValidationException("Amount must be greater than zero");
+        }
+        // check category exists
+        if(!wallet.categories.any((category)=> category.categoryId == categoryId)){
+          throw ValidationException("Category not found!");
         }
         transactions.add(Transaction(transactionId: transactionId, title: title, amount: amount, type: type, date: date ?? DateTime.now(), categoryId: categoryId));
     }
