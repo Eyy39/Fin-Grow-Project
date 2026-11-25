@@ -70,4 +70,52 @@ class BudgetService {
 
 
   }
+
+  // Delete a budget
+  void deleteBudget(String budgetId) {
+    wallet.budgets.removeWhere((budget)=> budget.budgetId == budgetId,);
+  }
+
+  // Calculate total expenses for this budget
+  double getSpent(Budget budget) {
+    double totalSpent = 0;
+
+    for (final transcation in wallet.transactions) {
+      if (budget.appliesTo(transcation)) {
+        totalSpent += transcation.amount;
+      }
+    }
+    return totalSpent;
+  }
+
+  // calculate remaining budget
+
+  double getRemaining(Budget budget) {
+    return budget.amount - getSpent(budget);
+  }
+
+  // Determine budget status
+  BudgetStatus getStatus(Budget budget) {
+    final spent = getSpent(budget);
+
+    if (spent > budget.amount) {
+      return BudgetStatus.exceeded;
+    }
+
+    else if (spent >= budget.amount) {
+      return BudgetStatus.warning;
+    }
+    else {
+      return BudgetStatus.normal;
+    }
+
+  }
+
+  // Check whether spending has reached the budget limit
+  bool getWarning(Budget budget) {
+    return getSpent(budget) >= budget.amount;
+  }
+
+  
+
 }
